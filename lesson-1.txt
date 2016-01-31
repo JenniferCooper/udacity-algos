@@ -1,0 +1,170 @@
+social network analysis CS 215
+large social networks; 
+
+actors and movies graph 
+visits all movies once, walking graph
+
+Eulerian path:
+move along path hitting every edge once. if have eu;erian path, all nodes other than start and fish need even degree. Beg and end nodes have to have odd degeree. Iff relation.. 
+exceptionwith even degree nodes, depending on graph
+
+how to make pograms fly.
+- careful design (don't do wasteful stuff)
+- tweaking loops
+- good algo design
+
+devise algo
+ensure correctness
+analyze efficiency
+
+continue until all three are satisfied
+
+heavy maths; 
+important though
+- formalizes what you are doing
+- analyze correctness
+- analyze efficiency (time, memory, energy usage)
+
+look at and run see pattern and why 
+
+correctness of naive algo
+claim: before or after 'while' loop, ab = xy + z
+basecase: first time, x = a, y = b, z = 0
+inductive step: if ab = xy + z before
+	  	then ab = x'y' + z' after
+
+Running time
+how long does it take to execute, as the inputs increase in size:
+naive(1,1)
+naive(2,2)
+naive(256, 256)
+naive(65536, 65536)
+
+plots the input by time example, totally linear
+which makes sense, doubling a doubles the time
+
+russian peasants algo
+ancient Eqyptian multiplcation
+
+def russian(a,b):
+    x = a; y = b
+    z = 0
+    while x > 0:
+    	  if x % 2 == 1: z = z + y
+	  y = y << 1 //doubling y
+	  x = x >> 1 //halving x
+    return z
+
+walks through example
+
+correctness of russian
+ab = xy+z
+
+basecase: check
+inductive step: if ab = xy+z holds 
+	  	then ab = x'y'+z' afterwards
+case1: x is odd 
+
+cae2: x is even
+
+ea time there is a 1 in the binary represenation of x (or a), the algo will add
+
+naive or russian: which is faster?
+naive(2^23, 2^23) approx 3 secs
+russian(2^1000, 2^1000) < 2 ms
+
+Measuring Time
+simplifying assumptions
+- simple statements takes unit time
+- sequence of simple statements is the sum
+- loop takes time equal to the body * iterations
+
+Counting Steps
+def countdown_time(n):
+    t = ((n/5) * 2) + 3
+    print t
+
+Steps for naive
+count steps as function
+
+def naive_time(a):
+    t = (2 * a)+ 3
+    print t
+
+Halving
+counting steps in russian harder: plot was not useful, fxn has conditionals that may not always run,
+
+loop is key to analysis, how many times can x be cut in half (rounding down), before x = 0?
+
+steps to execute russian
+3(ceiling(log2 a) + 1) + 3 + # of "on" bits in a
+<= 4(ceiling(log2 a) + 7
+
+much less than linear naive. 
+
+Divide and Conquer
+a*b = b+b+b+b...  a times
+    = (b+b) + (b+b) .... a/2 times
+    = 2(b + b...) with paren a/2 times
+break the prob into equalish parts and then solve separately and recombine
+
+russian algo canb expressed recursively
+def rec_russian(a,b):
+    if a == 0: return 0
+    if a % 2 == 0: return 2*rec_russian(a/2, b)
+    return b + 2*rec_russian((a-1/2),b)
+  
+recurrance relation for rec russian
+T(a) = if a=0, 1
+     ` elif a is even, 3 + T(a/2)
+       else, 3 + T((a-1)/2)
+
+
+
+Quiz Answers
+1. start at MS and fit all; ends at Kevin Bacon 
+
+2. Yes depends on graph (start and end on same node) eularian tour. wrong, all such graphs do; but then shows an exception with odd degree nodes?
+
+3. what does naive(a, b) compute as a function of a & b? mult y by x; 
+product of a & b
+
+4. roughly linear t maybe expo? YES, linear
+
+5. 17 >> 1 is 9 (guessed) oh, 8! halves a number, if 1, then drops the one and halves
+
+6. 3 addition operations; ouch  2
+
+7. 12 units running time
+
+8. 
+def time(n):
+    return 3 + 2 * math.ceil(n/5)
+
+9. 
+def naive_time(a):
+    t = (2 * a)+ 3
+    print t
+
+10. ceiling(log2 x) + 1
+
+11. T(a) = 3(ceiling log2 a) + 4
+
+Problem Set 1 Notes
+inputs list of nodes
+outputs graph as list of tuples representing the edges between nodes that have eulerian tour
+
+
+def create_tour(nodes):
+    #code here
+    #nodes = [1,2,3]
+    #return [(1,3), (1,2), (2,3)]
+
+def get_degree(tour):
+    degree = {}
+    for x,y in tour:
+    	degree[x] = degree.get(x,0) + 1
+	degree[y] = degree.get(x,0) + 1
+    return degree
+
+
